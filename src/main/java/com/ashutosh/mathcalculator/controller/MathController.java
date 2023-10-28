@@ -17,7 +17,7 @@ public class  MathController {
     }
 
     @GetMapping("/math/{expression}")
-    public ResponseEntity<MathEntity> getRapidApi(@PathVariable("expression") String expression){
+    public ResponseEntity<String> getRapidApi(@PathVariable("expression") String expression){
         //int ans = mathService.getValue(expression);
         return ResponseEntity.ok(mathService.getValue(expression));
     }

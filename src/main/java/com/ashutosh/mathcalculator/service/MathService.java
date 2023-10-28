@@ -45,11 +45,10 @@ public class MathService {
         restTemplate = restTemplateBuilder.build();
     }
 
-    public MathEntity getValue(String expression){
+    public String getValue(String expression){
         String s  = ExpressionMapper.convertToURLEncoder(expression);
         System.out.println("Encoded string : "+s);
         String expressionUrl = mathUrl+s;
-        MathEntity ans= new MathEntity();
         try {
             URI uri;
             uri = new URI(expressionUrl);
@@ -57,15 +56,14 @@ public class MathService {
             headers.set(apiKeyName, apiKeyValue);
             headers.set(hostName, hostValue);
             //headers.setContentType(MediaType.APPLICATION_JSON);
-//            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
             HttpEntity<String> request = new HttpEntity<String>(headers);
-//            ResponseEntity<MathEntity> response =
-//                    restTemplate.exchange(uri, HttpMethod.GET, request, MathEntity.class);
-            ResponseEntity<MathEntity> response1 =
-                    restTemplate.getForEntity(uri, MathEntity.class);
-            ans = response1.getBody();
-            return ans;
-        } catch (URISyntaxException e) {
+            ResponseEntity<String> response =
+                    restTemplate.exchange(uri, HttpMethod.GET, request, String.class);
+//            ResponseEntity<MathEntity> response1 =
+//                    restTemplate.getForEntity(uri, MathEntity.class);
+            return response.getBody();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
